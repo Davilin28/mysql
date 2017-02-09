@@ -61,7 +61,7 @@ CREATE TABLE `MOVILES` (
 CREATE TABLE `MOVIL_LIBRE` (
   `Marca_MOVILES` varchar(20) NOT NULL DEFAULT '',
   `Modelo_MOVILES` varchar(20) NOT NULL DEFAULT '',
-  `precio` decimal(10,0) DEFAULT NULL,
+  `precio` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`Marca_MOVILES`,`Modelo_MOVILES`),
   CONSTRAINT `fk1_MOVIL_LIBRE` FOREIGN KEY (`Marca_MOVILES`, `Modelo_MOVILES`) REFERENCES `MOVILES` (`Marca`, `Modelo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -70,7 +70,7 @@ CREATE TABLE `MOVIL_CONTRATO` (
   `Marca_MOVILES` varchar(20) NOT NULL DEFAULT '',
   `Modelo_MOVILES` varchar(20) NOT NULL DEFAULT '',
   `Nombre_OPERADORAS` varchar(10) NOT NULL DEFAULT '',
-  `precio` decimal(10,0) DEFAULT NULL,
+  `precio` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Marca_MOVILES`,`Modelo_MOVILES`,`Nombre_OPERADORAS`),
   KEY `fk2_MOVIL_CONTRATO` (`Nombre_OPERADORAS`),
   CONSTRAINT `fk1_MOVIL_CONTRATO` FOREIGN KEY (`Marca_MOVILES`, `Modelo_MOVILES`) REFERENCES `MOVILES` (`Marca`, `Modelo`),
@@ -93,7 +93,7 @@ CREATE TABLE `COMPRAS` (
   `Nombre_Tienda` varchar(10) NOT NULL DEFAULT '',
   `Marca_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
   `Modelo_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
-  `Dia` date DEFAULT NULL,
+  `Dia` varchar(10),
   PRIMARY KEY (`DNI_Cliente`,`Nombre_Tienda`,`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
   KEY `fk2_Compras` (`Nombre_Tienda`),
   KEY `fk3_Compras` (`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
@@ -109,7 +109,7 @@ CREATE TABLE `CONTRATOS` (
   `Nombre_TARIFAS_OFERTAS` varchar(10) NOT NULL DEFAULT '',
   `Marca_MOVILES_OFERTAS` varchar(15) NOT NULL DEFAULT '',
   `Modelo_MOVILES_OFERTAS` varchar(15) NOT NULL DEFAULT '',
-  `Dia` date,
+  `Dia` varchar(10),
   PRIMARY KEY(`DNI_Cliente`,`Nombre_Tienda`,`Nombre_OPERADORAS_TARIFAS_OFERTAS`,`Nombre_TARIFAS_OFERTAS`,`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`), 
   KEY `fk1_CONTRATOS` (`DNI_Cliente`),
   KEY `fk2_CONTRATOS` (`Nombre_Tienda`),
