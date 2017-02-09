@@ -1,0 +1,278 @@
+-- MySQL dump 10.13  Distrib 5.5.46, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: tienda_de_moviles
+-- ------------------------------------------------------
+-- Server version	5.5.46-0ubuntu0.14.04.2
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `COMPRAS`
+--
+
+DROP TABLE IF EXISTS `COMPRAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `COMPRAS` (
+  `DNI_Cliente` varchar(20) NOT NULL DEFAULT '',
+  `Nombre_Tienda` varchar(10) NOT NULL DEFAULT '',
+  `Marca_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
+  `Dia` date DEFAULT NULL,
+  PRIMARY KEY (`DNI_Cliente`,`Nombre_Tienda`,`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
+  KEY `fk2_Compras` (`Nombre_Tienda`),
+  KEY `fk3_Compras` (`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
+  CONSTRAINT `fk1_Compras` FOREIGN KEY (`DNI_Cliente`) REFERENCES `clientes` (`dni`),
+  CONSTRAINT `fk2_Compras` FOREIGN KEY (`Nombre_Tienda`) REFERENCES `tiendas` (`Nombre`),
+  CONSTRAINT `fk3_Compras` FOREIGN KEY (`Marca_MOVILES_OFERTAS`, `Modelo_MOVILES_OFERTAS`) REFERENCES `OFERTAS` (`Marca_MOVIL_CONTRATO`, `Modelo_MOVIL_CONTRATO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `COMPRAS`
+--
+
+LOCK TABLES `COMPRAS` WRITE;
+/*!40000 ALTER TABLE `COMPRAS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `COMPRAS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `MOVILES`
+--
+
+DROP TABLE IF EXISTS `MOVILES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `MOVILES` (
+  `Marca` varchar(20) NOT NULL DEFAULT '',
+  `Modelo` varchar(20) NOT NULL DEFAULT '',
+  `Descripcion` varchar(20) DEFAULT NULL,
+  `SO` varchar(10) DEFAULT NULL,
+  `RAM` varchar(10) DEFAULT NULL,
+  `PulgadasPantalla` int(10) DEFAULT NULL,
+  `CamaraMPX` int(10) DEFAULT NULL,
+  PRIMARY KEY (`Marca`,`Modelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `MOVILES`
+--
+
+LOCK TABLES `MOVILES` WRITE;
+/*!40000 ALTER TABLE `MOVILES` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MOVILES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `MOVIL_CONTRATO`
+--
+
+DROP TABLE IF EXISTS `MOVIL_CONTRATO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `MOVIL_CONTRATO` (
+  `Marca_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `Nombre_OPERADORAS` varchar(10) NOT NULL DEFAULT '',
+  `precio` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`Marca_MOVILES`,`Modelo_MOVILES`,`Nombre_OPERADORAS`),
+  KEY `fk2_MOVIL_CONTRATO` (`Nombre_OPERADORAS`),
+  CONSTRAINT `fk1_MOVIL_CONTRATO` FOREIGN KEY (`Marca_MOVILES`, `Modelo_MOVILES`) REFERENCES `MOVILES` (`Marca`, `Modelo`),
+  CONSTRAINT `fk2_MOVIL_CONTRATO` FOREIGN KEY (`Nombre_OPERADORAS`) REFERENCES `operadoras` (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `MOVIL_CONTRATO`
+--
+
+LOCK TABLES `MOVIL_CONTRATO` WRITE;
+/*!40000 ALTER TABLE `MOVIL_CONTRATO` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MOVIL_CONTRATO` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `MOVIL_LIBRE`
+--
+
+DROP TABLE IF EXISTS `MOVIL_LIBRE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `MOVIL_LIBRE` (
+  `Marca_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `precio` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`Marca_MOVILES`,`Modelo_MOVILES`),
+  CONSTRAINT `fk1_MOVIL_LIBRE` FOREIGN KEY (`Marca_MOVILES`, `Modelo_MOVILES`) REFERENCES `MOVILES` (`Marca`, `Modelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `MOVIL_LIBRE`
+--
+
+LOCK TABLES `MOVIL_LIBRE` WRITE;
+/*!40000 ALTER TABLE `MOVIL_LIBRE` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MOVIL_LIBRE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OFERTAS`
+--
+
+DROP TABLE IF EXISTS `OFERTAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `OFERTAS` (
+  `Nombre_OPERADORAS_TARIFAS` varchar(10) NOT NULL DEFAULT '',
+  `Nombre_TARIFAS` varchar(20) NOT NULL DEFAULT '',
+  `Marca_MOVIL_CONTRATO` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVIL_CONTRATO` varchar(20) NOT NULL DEFAULT '',
+  PRIMARY KEY (`Nombre_OPERADORAS_TARIFAS`,`Nombre_TARIFAS`,`Marca_MOVIL_CONTRATO`,`Modelo_MOVIL_CONTRATO`),
+  KEY `fk2_OFERTAS` (`Marca_MOVIL_CONTRATO`,`Modelo_MOVIL_CONTRATO`),
+  CONSTRAINT `fk1_OFERTAS` FOREIGN KEY (`Nombre_OPERADORAS_TARIFAS`, `Nombre_TARIFAS`) REFERENCES `TARIFAS` (`Nombre`, `Nombre_OPERADORAS`),
+  CONSTRAINT `fk2_OFERTAS` FOREIGN KEY (`Marca_MOVIL_CONTRATO`, `Modelo_MOVIL_CONTRATO`) REFERENCES `MOVIL_CONTRATO` (`Marca_MOVILES`, `Modelo_MOVILES`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OFERTAS`
+--
+
+LOCK TABLES `OFERTAS` WRITE;
+/*!40000 ALTER TABLE `OFERTAS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `OFERTAS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `TARIFAS`
+--
+
+DROP TABLE IF EXISTS `TARIFAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TARIFAS` (
+  `Nombre` varchar(20) NOT NULL DEFAULT '',
+  `Nombre_OPERADORAS` varchar(20) NOT NULL DEFAULT '',
+  `TamañoDatos` int(10) DEFAULT NULL,
+  `TipoDatos` varchar(10) DEFAULT NULL,
+  `MinutosGratis` int(10) DEFAULT NULL,
+  PRIMARY KEY (`Nombre`,`Nombre_OPERADORAS`),
+  KEY `fk1_TARIFAS` (`Nombre_OPERADORAS`),
+  CONSTRAINT `fk1_TARIFAS` FOREIGN KEY (`Nombre_OPERADORAS`) REFERENCES `operadoras` (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TARIFAS`
+--
+
+LOCK TABLES `TARIFAS` WRITE;
+/*!40000 ALTER TABLE `TARIFAS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `TARIFAS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clientes`
+--
+
+DROP TABLE IF EXISTS `CLIENTES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CLIENTES` (
+  `dni` varchar(20) NOT NULL DEFAULT '',
+  `nombre` varchar(10) DEFAULT NULL,
+  `Primer_Apellido` varchar(20) DEFAULT NULL,
+  `Segundo_Apellido` varchar(20) DEFAULT NULL,
+  `Telefono` decimal(10,0) DEFAULT NULL,
+  `Email` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`dni`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clintes`
+--
+
+LOCK TABLES `CLIENTES` WRITE;
+/*!40000 ALTER TABLE `CLIENTES` DISABLE KEYS */;
+/*!40000 ALTER TABLE `CLIENTES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `operadoras`
+--
+
+DROP TABLE IF EXISTS `OPERADORAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `OPERADORAS` (
+  `Nombre` varchar(10) NOT NULL DEFAULT '',
+  `ColorLogo` varchar(10) DEFAULT NULL,
+  `PorcentajeCobertura` tinyint(10) DEFAULT NULL,
+  `FrecuenciaGSM` tinyint(10) DEFAULT NULL,
+  `PaginaWeb` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `operadoras`
+--
+
+LOCK TABLES `OPERADORAS` WRITE;
+/*!40000 ALTER TABLE `operadoras` DISABLE KEYS */;
+/*!40000 ALTER TABLE `operadoras` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tiendas`
+--
+
+DROP TABLE IF EXISTS `TIENDAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TIENDAS` (
+  `Nombre` varchar(10) NOT NULL DEFAULT '',
+  `Provincia` varchar(15) DEFAULT NULL,
+  `Localidad` varchar(15) DEFAULT NULL,
+  `Direccion` varchar(20) DEFAULT NULL,
+  `Telefono` varchar(20) DEFAULT NULL,
+  `DiaApertura` date DEFAULT NULL,
+  `DiaCierre` date DEFAULT NULL,
+  `HoraApertura` time DEFAULT NULL,
+  `HoraCierre` time DEFAULT NULL,
+  PRIMARY KEY (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tiendas`
+--
+
+LOCK TABLES `TIENDAS` WRITE;
+/*!40000 ALTER TABLE `tiendas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tiendas` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-01-30 13:34:23

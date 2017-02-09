@@ -1,0 +1,11 @@
+INSERT INTO CLIENTES (dni,nombre,Primer_Apellido,Segundo_Apellido,Telefono,Email) VALUES ("09070489W","David","Roman","Rey",918808802,"david@gmail.com");
+INSERT INTO CLIENTES (dni,nombre,Primer_Apellido,Segundo_Apellido,Telefono,Email) VALUES ("12345258W","Pepe","Roman","Rey",918808002,"pepe@gmail.com");
+INSERT INTO CLIENTES (dni,nombre,Primer_Apellido,Segundo_Apellido,Telefono,Email) VALUES ("22843275W","Armando","Perez","Rey",91880002,"perez@gmail.com");
+INSERT INTO CLIENTES (dni,nombre,Primer_Apellido,Segundo_Apellido,Telefono,Email) VALUES ("44345525W","luis","Garcia","Rey",91880002,"garcia@gmail.com");
+INSERT INTO CLIENTES (dni,nombre,Primer_Apellido,Segundo_Apellido,Telefono,Email) VALUES ("12554525W","Diego","Villuela","Rey",91880002,"diego@gmail.com");
+
+INSERT INTO TIENDAS (Nombre,Provincia,Localidad,Direccion,Telefono,DiaApertura,DiaCierre,HoraApertura,HoraCierre) VALUES ("David","Alcala","Madrid","C/Rio pisuerga",918808802,"Lunes","Viernes","09:00","14:00");
+INSERT INTO TIENDAS (Nombre,Provincia,Localidad,Direccion,Telefono,DiaApertura,DiaCierre,HoraApertura,HoraCierre) VALUES ("Diego","Madrid","Madrid","C/Alcala",917889523,"Lunes","Sabado","09:00","18:00");
+INSERT INTO TIENDAS (Nombre,Provincia,Localidad,Direccion,Telefono,DiaApertura,DiaCierre,HoraApertura,HoraCierre) VALUES ("Pepe","Guadalajara","Guadalajara","C/El soto",928886132,"Lunes","Viernes","09:00","16:00");
+INSERT INTO TIENDAS (Nombre,Provincia,Localidad,Direccion,Telefono,DiaApertura,DiaCierre,HoraApertura,HoraCierre) VALUES ("Luis","Alcala","Madrid","C/Jardines",918828812,"Lunes","Jueves","10:00","20:00");
+INSERT INTO TIENDAS (Nombre,Provincia,Localidad,Direccion,Telefono,DiaApertura,DiaCierre,HoraApertura,HoraCierre) VALUES ("Jorge","Barcelona","Barcelona","C/caceres",917868212,"Lunes","Viernes","09:00","19:00");

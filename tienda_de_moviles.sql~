@@ -1,0 +1,122 @@
+DROP DATABASE IF EXISTS tienda_de_moviles;
+
+CREATE DATABASE tienda_de_moviles;
+
+USE tienda_de_moviles;
+
+CREATE TABLE `CLIENTES` (
+  `dni` char(9) NOT NULL DEFAULT '',
+  `nombre` varchar(10) DEFAULT NULL,
+  `Primer_Apellido` varchar(20) DEFAULT NULL,
+  `Segundo_Apellido` varchar(20) DEFAULT NULL,
+  `Telefono` int(9) DEFAULT NULL,
+  `Email` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`dni`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `TIENDAS` (
+  `Nombre` varchar(10) NOT NULL DEFAULT '',
+  `Provincia` varchar(15) DEFAULT NULL,
+  `Localidad` varchar(15) DEFAULT NULL,
+  `Direccion` varchar(20) DEFAULT NULL,
+  `Telefono` int(9) DEFAULT NULL,
+  `DiaApertura` date DEFAULT NULL,
+  `DiaCierre` date DEFAULT NULL,
+  `HoraApertura` time DEFAULT NULL,
+  `HoraCierre` time DEFAULT NULL,
+  PRIMARY KEY (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `OPERADORAS` (
+  `Nombre` varchar(10) NOT NULL DEFAULT '',
+  `ColorLogo` varchar(10) DEFAULT NULL,
+  `PorcentajeCobertura` tinyint(10) DEFAULT NULL,
+  `FrecuenciaGSM` tinyint(10) DEFAULT NULL,
+  `PaginaWeb` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `TARIFAS` (
+  `Nombre` varchar(20) NOT NULL DEFAULT '',
+  `Nombre_OPERADORAS` varchar(20) NOT NULL DEFAULT '',
+  `TamañoDatos` int(10) DEFAULT NULL,
+  `TipoDatos` varchar(10) DEFAULT NULL,
+  `MinutosGratis` int(10) DEFAULT NULL,
+  PRIMARY KEY (`Nombre`,`Nombre_OPERADORAS`),
+  KEY `fk1_TARIFAS` (`Nombre_OPERADORAS`),
+  CONSTRAINT `fk1_TARIFAS` FOREIGN KEY (`Nombre_OPERADORAS`) REFERENCES `OPERADORAS` (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `MOVILES` (
+  `Marca` varchar(20) NOT NULL DEFAULT '',
+  `Modelo` varchar(20) NOT NULL DEFAULT '',
+  `Descripcion` varchar(20) DEFAULT NULL,
+  `SO` varchar(10) DEFAULT NULL,
+  `RAM` varchar(10) DEFAULT NULL,
+  `PulgadasPantalla` int(10) DEFAULT NULL,
+  `CamaraMPX` int(10) DEFAULT NULL,
+  PRIMARY KEY (`Marca`,`Modelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `MOVIL_LIBRE` (
+  `Marca_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `precio` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`Marca_MOVILES`,`Modelo_MOVILES`),
+  CONSTRAINT `fk1_MOVIL_LIBRE` FOREIGN KEY (`Marca_MOVILES`, `Modelo_MOVILES`) REFERENCES `MOVILES` (`Marca`, `Modelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `MOVIL_CONTRATO` (
+  `Marca_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVILES` varchar(20) NOT NULL DEFAULT '',
+  `Nombre_OPERADORAS` varchar(10) NOT NULL DEFAULT '',
+  `precio` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`Marca_MOVILES`,`Modelo_MOVILES`,`Nombre_OPERADORAS`),
+  KEY `fk2_MOVIL_CONTRATO` (`Nombre_OPERADORAS`),
+  CONSTRAINT `fk1_MOVIL_CONTRATO` FOREIGN KEY (`Marca_MOVILES`, `Modelo_MOVILES`) REFERENCES `MOVILES` (`Marca`, `Modelo`),
+  CONSTRAINT `fk2_MOVIL_CONTRATO` FOREIGN KEY (`Nombre_OPERADORAS`) REFERENCES `OPERADORAS` (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `OFERTAS` (
+  `Nombre_OPERADORAS_TARIFAS` varchar(10) NOT NULL DEFAULT '',
+  `Nombre_TARIFAS` varchar(20) NOT NULL DEFAULT '',
+  `Marca_MOVIL_CONTRATO` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVIL_CONTRATO` varchar(20) NOT NULL DEFAULT '',
+  PRIMARY KEY (`Nombre_OPERADORAS_TARIFAS`,`Nombre_TARIFAS`,`Marca_MOVIL_CONTRATO`,`Modelo_MOVIL_CONTRATO`),
+  KEY `fk2_OFERTAS` (`Marca_MOVIL_CONTRATO`,`Modelo_MOVIL_CONTRATO`),
+  CONSTRAINT `fk1_OFERTAS` FOREIGN KEY (`Nombre_OPERADORAS_TARIFAS`, `Nombre_TARIFAS`) REFERENCES `TARIFAS` (`Nombre`, `Nombre_OPERADORAS`),
+  CONSTRAINT `fk2_OFERTAS` FOREIGN KEY (`Marca_MOVIL_CONTRATO`, `Modelo_MOVIL_CONTRATO`) REFERENCES `MOVIL_CONTRATO` (`Marca_MOVILES`, `Modelo_MOVILES`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `COMPRAS` (
+  `DNI_Cliente` varchar(20) NOT NULL DEFAULT '',
+  `Nombre_Tienda` varchar(10) NOT NULL DEFAULT '',
+  `Marca_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
+  `Modelo_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
+  `Dia` date DEFAULT NULL,
+  PRIMARY KEY (`DNI_Cliente`,`Nombre_Tienda`,`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
+  KEY `fk2_Compras` (`Nombre_Tienda`),
+  KEY `fk3_Compras` (`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
+  CONSTRAINT `fk1_Compras` FOREIGN KEY (`DNI_Cliente`) REFERENCES `CLIENTES` (`dni`),
+  CONSTRAINT `fk2_Compras` FOREIGN KEY (`Nombre_Tienda`) REFERENCES `TIENDAS` (`Nombre`),
+  CONSTRAINT `fk3_Compras` FOREIGN KEY (`Marca_MOVILES_OFERTAS`, `Modelo_MOVILES_OFERTAS`) REFERENCES `OFERTAS` (`Marca_MOVIL_CONTRATO`, `Modelo_MOVIL_CONTRATO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `CONTRATOS` (
+  `DNI_Cliente` char(9) NOT NULL DEFAULT '',
+  `Nombre_Tienda` varchar(10) NOT NULL DEFAULT '', 
+  `Nombre_OPERADORAS_TARIFAS_OFERTAS` varchar(10) NOT NULL DEFAULT '', 
+  `Nombre_TARIFAS_OFERTAS` varchar(10) NOT NULL DEFAULT '',
+  `Marca_MOVILES_OFERTAS` varchar(15) NOT NULL DEFAULT '',
+  `Modelo_MOVILES_OFERTAS` varchar(15) NOT NULL DEFAULT '',
+  `Dia` date,
+  PRIMARY KEY(`DNI_Cliente`,`Nombre_Tienda`,`Nombre_OPERADORAS_TARIFAS_OFERTAS`,`Nombre_TARIFAS_OFERTAS`,`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`), 
+  KEY `fk1_CONTRATOS` (`DNI_Cliente`),
+  KEY `fk2_CONTRATOS` (`Nombre_Tienda`),
+  KEY `fk3_CONTRATOS` (`Nombre_OPERADORAS_TARIFAS_OFERTAS`,`Nombre_TARIFAS_OFERTAS`,`Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`),
+  CONSTRAINT `fk1_CONTRATOS` FOREIGN KEY (`DNI_Cliente`) REFERENCES `CLIENTES`(`dni`), 
+  CONSTRAINT `fk2_CONTRATOS` FOREIGN KEY (`Nombre_Tienda`) REFERENCES `TIENDAS` (`Nombre`), 
+  CONSTRAINT `fk3_CONTRATOS` FOREIGN KEY (`Nombre_OPERADORAS_TARIFAS_OFERTAS`,`Nombre_TARIFAS_OFERTAS`, `Marca_MOVILES_OFERTAS`,`Modelo_MOVILES_OFERTAS`) REFERENCES `OFERTAS` (`Nombre_OPERADORAS_TARIFAS`, `Nombre_TARIFAS`, `Marca_MOVIL_CONTRATO`, `Modelo_MOVIL_CONTRATO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+source tiendademoviles_datos.sql
