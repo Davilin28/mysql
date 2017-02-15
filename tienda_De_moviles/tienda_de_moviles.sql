@@ -89,7 +89,7 @@ CREATE TABLE `OFERTAS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `COMPRAS` (
-  `DNI_Cliente` varchar(20) NOT NULL DEFAULT '',
+  `DNI_Cliente` varchar(9) NOT NULL DEFAULT '',
   `Nombre_Tienda` varchar(10) NOT NULL DEFAULT '',
   `Marca_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
   `Modelo_MOVILES_OFERTAS` varchar(20) NOT NULL DEFAULT '',
