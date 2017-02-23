@@ -1,0 +1,20 @@
+DROP DATABASE IF EXISTS Starwars;
+
+CREATE DATABASE Starwars;
+
+USE Starwars;
+
+CREATE TABLE Actores(
+Codigo INTEGER PRIMARY KEY,
+Nombre VARCHAR(40),
+Fecha DATE,
+Nacionalidad VARCHAR(20)
+);
+
+CREATE TABLE Personajes(
+Codigo INTEGER PRIMARY KEY,
+Nombre VARCHAR(30),
+Raza VARCHAR(20),
+Grado VARCHAR(20),
+CodigoActor INTEGER
+);
